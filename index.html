@@ -443,27 +443,8 @@ html, body {
   100% { transform:translateY(105vh) rotate(720deg); opacity:0; }
 }
 
-/* ====================================================
-   PROGRESS DOTS
-===================================================== */
-#dots {
-  position:fixed; right:11px; top:50%;
-  transform:translateY(-50%);
-  display:flex; flex-direction:column; gap:8px; z-index:200;
-}
-.dot {
-  width:5px; height:5px; border-radius:50%;
-  background:rgba(255,215,0,.2); cursor:pointer; transition:all .35s;
-}
-.dot.active {
-  background:var(--gold);
-  box-shadow:0 0 8px rgba(255,215,0,.8); height:18px; border-radius:3px;
-}
-#slide-label {
-  position:fixed; top:14px; left:16px;
-  font-family:'Cinzel',serif; font-size:.5rem;
-  letter-spacing:3px; color:rgba(255,215,0,.22); z-index:200; text-transform:uppercase;
-}
+/* dots and slide label hidden */
+#dots, #slide-label { display:none !important; }
 </style>
 </head>
 <body>
