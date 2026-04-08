@@ -11,21 +11,25 @@
 ===================================================== */
 *, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
 :root {
-  --gold:      #FFD700;
-  --gold2:     #FFC94D;
-  --rose:      #F2A07B;
-  --neon:      #00D4FF;
-  --dark:      #03000F;
-  --deep:      #08001A;
+  --gold:  #FFD700;
+  --gold2: #FFC94D;
+  --rose:  #F2A07B;
+  --neon:  #00D4FF;
+  --dark:  #03000F;
+  --deep:  #08001A;
 }
-html, body { width:100%; height:100%; overflow:hidden; background:var(--dark); }
+html, body {
+  width:100%; height:100%;
+  overflow:hidden; background:var(--dark);
+  -webkit-tap-highlight-color:transparent;
+}
 
 /* ====================================================
    SLIDES WRAPPER — SCROLL SNAP
 ===================================================== */
 #slider {
   width:100%; height:100vh;
-  overflow-y:scroll;
+  overflow-y:scroll; overflow-x:hidden;
   scroll-snap-type:y mandatory;
   -webkit-overflow-scrolling:touch;
   scrollbar-width:none;
@@ -37,12 +41,12 @@ html, body { width:100%; height:100%; overflow:hidden; background:var(--dark); }
 ===================================================== */
 .slide {
   width:100%; height:100vh;
+  max-width:100vw;
   scroll-snap-align:start;
   position:relative; overflow:hidden;
   display:flex; flex-direction:column;
   align-items:center; justify-content:center;
-  text-align:center; padding:28px 24px;
-  /* Each slide starts invisible; JS adds .visible when in view */
+  text-align:center; padding:28px 20px;
 }
 
 /* ====================================================
@@ -50,7 +54,7 @@ html, body { width:100%; height:100%; overflow:hidden; background:var(--dark); }
 ===================================================== */
 #s1 { background: radial-gradient(ellipse at 50% 30%, #220040 0%, #0e001f 45%, #03000F 100%); }
 #s2 { background: radial-gradient(ellipse at 40% 60%, #1a0e00 0%, #0d0600 50%, #03000F 100%); }
-#s3 { background: radial-gradient(ellipse at 50% 40%, #001f10 0%, #000d08 50%, #03000F 100%); }
+#s3 { background: radial-gradient(ellipse at 50% 40%, #1f0a00 0%, #110500 50%, #03000F 100%); }
 #s4 { background: radial-gradient(ellipse at 55% 35%, #00102a 0%, #000818 50%, #03000F 100%); }
 #s5 { background: radial-gradient(ellipse at 45% 55%, #150028 0%, #0a001a 50%, #03000F 100%); }
 #s6 { background: radial-gradient(ellipse at 50% 40%, #1f0008 0%, #0d0004 50%, #03000F 100%); }
@@ -65,8 +69,8 @@ html, body { width:100%; height:100%; overflow:hidden; background:var(--dark); }
   animation:twinkle ease-in-out infinite;
 }
 @keyframes twinkle {
-  0%,100% { opacity:.08; transform:scale(1); }
-  50%      { opacity:.9;  transform:scale(1.6); }
+  0%,100% { opacity:.06; transform:scale(1); }
+  50%      { opacity:.85; transform:scale(1.5); }
 }
 
 /* ====================================================
@@ -78,26 +82,23 @@ html, body { width:100%; height:100%; overflow:hidden; background:var(--dark); }
   animation:rise linear infinite; opacity:0;
 }
 @keyframes rise {
-  0%   { transform:translateY(105vh) translateX(0);  opacity:0; }
-  8%   { opacity:.85; }
-  92%  { opacity:.25; }
-  100% { transform:translateY(-8vh)  translateX(50px); opacity:0; }
+  0%   { transform:translateY(105vh) translateX(0);   opacity:0; }
+  8%   { opacity:.8; }
+  92%  { opacity:.2; }
+  100% { transform:translateY(-8vh) translateX(40px); opacity:0; }
 }
 
 /* ====================================================
    ANIMATED RINGS
 ===================================================== */
 .ring {
-  position:absolute; border-radius:50%;
-  border:1px solid;
-  top:50%; left:50%;
-  transform:translate(-50%,-50%);
-  animation:pulsering ease-in-out infinite;
-  pointer-events:none;
+  position:absolute; border-radius:50%; border:1px solid;
+  top:50%; left:50%; transform:translate(-50%,-50%);
+  animation:pulsering ease-in-out infinite; pointer-events:none;
 }
 @keyframes pulsering {
-  0%,100% { opacity:.15; transform:translate(-50%,-50%) scale(1); }
-  50%      { opacity:.45; transform:translate(-50%,-50%) scale(1.04); }
+  0%,100% { opacity:.12; transform:translate(-50%,-50%) scale(1); }
+  50%      { opacity:.38; transform:translate(-50%,-50%) scale(1.04); }
 }
 .spin-cw  { animation:spinCW  linear infinite; }
 .spin-ccw { animation:spinCCW linear infinite; }
@@ -109,39 +110,86 @@ html, body { width:100%; height:100%; overflow:hidden; background:var(--dark); }
 ===================================================== */
 .temple-bg {
   position:absolute; bottom:0; left:0;
-  width:100%; pointer-events:none;
-  opacity:.09;
+  width:100%; pointer-events:none; opacity:.09;
 }
 
 /* ====================================================
    TYPOGRAPHY
 ===================================================== */
-.f-script  { font-family:'Great Vibes',    cursive; }
-.f-serif   { font-family:'Cinzel',         serif;   }
-.f-body    { font-family:'Cormorant Garamond', serif; }
-.f-sans    { font-family:'Lato',           sans-serif; font-weight:200; }
+.f-script { font-family:'Great Vibes',    cursive; }
+.f-serif  { font-family:'Cinzel',         serif;   }
+.f-body   { font-family:'Cormorant Garamond', serif; }
+.f-sans   { font-family:'Lato',           sans-serif; font-weight:200; }
 
-/* Gold glow text */
-.glow {
-  animation:textglow 3s ease-in-out infinite;
-}
+/* ── SMOOTH MULTI-LAYER GLOW (no pixelation) ── */
+.glow { animation:textglow 3.5s ease-in-out infinite; }
 @keyframes textglow {
-  0%,100% { text-shadow:0 0 12px rgba(255,215,0,.7), 0 0 25px rgba(255,215,0,.35); }
-  50%     { text-shadow:0 0 25px rgba(255,215,0,1),  0 0 55px rgba(255,215,0,.6), 0 0 80px rgba(255,215,0,.3); }
+  0%,100% {
+    text-shadow:
+      0 0 6px  rgba(255,215,0,.35),
+      0 0 18px rgba(255,215,0,.22),
+      0 0 40px rgba(255,215,0,.12),
+      0 0 80px rgba(255,215,0,.06);
+  }
+  50% {
+    text-shadow:
+      0 0 8px  rgba(255,215,0,.55),
+      0 0 22px rgba(255,215,0,.38),
+      0 0 50px rgba(255,215,0,.22),
+      0 0 90px rgba(255,215,0,.12),
+      0 0 140px rgba(255,215,0,.05);
+  }
+}
+
+/* ── Smooth rose/pink glow for andglyph ── */
+.glow-rose { animation:roseglow 3.5s ease-in-out infinite; }
+@keyframes roseglow {
+  0%,100% {
+    text-shadow:
+      0 0 6px  rgba(242,160,123,.4),
+      0 0 20px rgba(242,160,123,.2),
+      0 0 45px rgba(242,160,123,.1);
+  }
+  50% {
+    text-shadow:
+      0 0 10px rgba(242,160,123,.7),
+      0 0 28px rgba(242,160,123,.4),
+      0 0 60px rgba(242,160,123,.2),
+      0 0 100px rgba(242,160,123,.08);
+  }
+}
+
+/* ── Smooth cyan glow for slide 4 ── */
+.glow-cyan { animation:cyanglow 3.5s ease-in-out infinite; }
+@keyframes cyanglow {
+  0%,100% {
+    text-shadow:
+      0 0 6px  rgba(0,212,255,.4),
+      0 0 18px rgba(0,212,255,.22),
+      0 0 40px rgba(0,212,255,.12),
+      0 0 80px rgba(0,212,255,.06);
+  }
+  50% {
+    text-shadow:
+      0 0 8px  rgba(0,212,255,.65),
+      0 0 22px rgba(0,212,255,.42),
+      0 0 50px rgba(0,212,255,.22),
+      0 0 90px rgba(0,212,255,.1),
+      0 0 130px rgba(0,212,255,.04);
+  }
 }
 
 /* ====================================================
    ENTRANCE ANIMATIONS  (triggered by .visible class)
 ===================================================== */
 .reveal { opacity:0; transition:opacity .9s ease, transform .9s ease; }
-.reveal.from-top    { transform:translateY(-30px); }
-.reveal.from-bottom { transform:translateY(30px);  }
-.reveal.from-left   { transform:translateX(-30px); }
-.reveal.from-right  { transform:translateX(30px);  }
+.reveal.from-top    { transform:translateY(-28px); }
+.reveal.from-bottom { transform:translateY(28px);  }
+.reveal.from-left   { transform:translateX(-28px); }
+.reveal.from-right  { transform:translateX(28px);  }
 .reveal.scale-in    { transform:scale(.85);        }
 .slide.visible .reveal { opacity:1; transform:translate(0) scale(1); }
 
-/* Staggered delays */
 .d1 { transition-delay:.15s; } .d2 { transition-delay:.35s; }
 .d3 { transition-delay:.55s; } .d4 { transition-delay:.75s; }
 .d5 { transition-delay:.95s; } .d6 { transition-delay:1.1s; }
@@ -151,119 +199,159 @@ html, body { width:100%; height:100%; overflow:hidden; background:var(--dark); }
 ===================================================== */
 .divider {
   display:flex; align-items:center; gap:10px;
-  margin:11px auto; width:fit-content;
+  margin:10px auto; width:fit-content;
 }
 .div-line {
   height:1px; width:44px;
   background:linear-gradient(to right, transparent, rgba(255,215,0,.5));
 }
 .div-line.r { background:linear-gradient(to left, transparent, rgba(255,215,0,.5)); }
-.div-gem { color:rgba(255,215,0,.55); font-size:.5rem; }
+.div-gem { color:rgba(255,215,0,.5); font-size:.5rem; }
 
 /* ====================================================
    SLIDE 1 — COVER
 ===================================================== */
 .cover-label {
-  font-size:.58rem; letter-spacing:3px;
-  text-transform:uppercase;
-  color:rgba(255,215,0,.55);
+  font-size:.56rem; letter-spacing:3px;
+  text-transform:uppercase; color:rgba(255,215,0,.5);
 }
-
-.couple-svg-wrap {
-  width:160px; height:160px; margin:10px auto;
-  animation:float 4.5s ease-in-out infinite;
-}
-@keyframes float {
-  0%,100% { transform:translateY(0); }
-  50%      { transform:translateY(-9px); }
-}
-
 .main-name {
-  font-size:3rem; line-height:1.05;
-  color:var(--gold);
+  font-size:clamp(2.2rem,8vw,3rem); line-height:1.05;
+  color:var(--gold); white-space:nowrap;
+}
+
+/* ── Couple Photos (mix-blend-mode: screen removes black bg) ── */
+@keyframes coupleFloat {
+  0%,100% { transform:translateY(0px); }
+  50%      { transform:translateY(-10px); }
+}
+@keyframes coupleFloatSlow {
+  0%,100% { transform:translateY(0px) scale(1); }
+  50%      { transform:translateY(-8px) scale(1.01); }
+}
+.couple-photo {
+  display:block;
+  width:min(88%, 300px);
+  height:auto;
+  margin:0 auto;
+  mix-blend-mode:screen;
+  -webkit-mix-blend-mode:screen;
+  filter:brightness(1.06) contrast(1.04) saturate(1.1);
+  pointer-events:none;
+  animation:coupleFloat 4.5s ease-in-out infinite;
+}
+.couple-photo-sm {
+  display:block;
+  width:min(80%, 240px);
+  height:auto;
+  margin:2px auto;
+  mix-blend-mode:screen;
+  -webkit-mix-blend-mode:screen;
+  filter:brightness(1.06) contrast(1.04) saturate(1.1);
+  pointer-events:none;
+  animation:coupleFloatSlow 5s ease-in-out infinite;
+}
+.couple-photo-wide {
+  display:block;
+  width:min(95%, 350px);
+  height:auto;
+  margin:4px auto;
+  mix-blend-mode:screen;
+  -webkit-mix-blend-mode:screen;
+  filter:brightness(1.06) contrast(1.04) saturate(1.1);
+  pointer-events:none;
+  animation:coupleFloatSlow 5.5s ease-in-out infinite;
 }
 
 /* Swipe hint */
 .swipe-hint {
-  position:absolute; bottom:24px; left:50%;
-  transform:translateX(-50%);
-  display:flex; flex-direction:column;
-  align-items:center; gap:5px;
-  animation:hintbounce 2s ease-in-out infinite;
-  z-index:10;
+  position:absolute; bottom:24px; left:50%; transform:translateX(-50%);
+  display:flex; flex-direction:column; align-items:center; gap:5px;
+  animation:hintbounce 2s ease-in-out infinite; z-index:10;
 }
 @keyframes hintbounce {
-  0%,100% { transform:translateX(-50%) translateY(0);   opacity:.6; }
+  0%,100% { transform:translateX(-50%) translateY(0);    opacity:.55; }
   50%      { transform:translateX(-50%) translateY(-7px); opacity:1; }
 }
 .swipe-hint span {
-  font-family:'Lato',sans-serif; font-size:.52rem;
-  letter-spacing:3px; color:rgba(255,215,0,.45);
-  text-transform:uppercase;
+  font-family:'Lato',sans-serif; font-size:.5rem;
+  letter-spacing:3px; color:rgba(255,215,0,.4); text-transform:uppercase;
 }
 .chevron-box { display:flex; flex-direction:column; gap:-2px; }
 .chev {
   width:13px; height:13px;
-  border-right:1.5px solid rgba(255,215,0,.45);
-  border-bottom:1.5px solid rgba(255,215,0,.45);
+  border-right:1.5px solid rgba(255,215,0,.4);
+  border-bottom:1.5px solid rgba(255,215,0,.4);
   transform:rotate(45deg); margin-top:-5px;
 }
 
 /* ====================================================
    SLIDE 2 — NAMES
 ===================================================== */
-.bride-name, .groom-name {
-  font-size:3.4rem; color:var(--gold);
-  font-family:'Great Vibes', cursive;
-  line-height:1;
+.bride-name {
+  font-size:3.2rem; color:var(--gold);
+  font-family:'Great Vibes', cursive; line-height:1;
+}
+.groom-name {
+  font-size:clamp(2rem,6.5vw,2.9rem);
+  color:var(--gold); font-family:'Great Vibes', cursive;
+  line-height:1; white-space:nowrap;
 }
 .and-glyph {
-  font-size:2.4rem; color:var(--rose);
+  font-size:2.2rem; color:var(--rose);
   font-family:'Great Vibes', cursive;
   display:block; margin:4px 0;
-  text-shadow:0 0 15px rgba(242,160,123,.8);
 }
 
 /* ====================================================
    SLIDES 3 & 4 — DATES
 ===================================================== */
 .event-chip {
-  display:inline-block;
-  border:1px solid;
+  display:inline-block; border:1px solid;
   padding:4px 18px; border-radius:20px;
-  font-size:.58rem; letter-spacing:4px;
-  text-transform:uppercase; margin-bottom:12px;
-  background:rgba(255,215,0,.04);
-  font-family:'Cinzel',serif;
+  font-size:.56rem; letter-spacing:4px;
+  text-transform:uppercase; margin-bottom:10px;
+  background:rgba(255,215,0,.04); font-family:'Cinzel',serif;
 }
 .big-num {
-  font-size:5.5rem; font-weight:700;
+  font-size:5.2rem; font-weight:700;
   font-family:'Cinzel',serif; line-height:1;
   color:var(--gold);
 }
 .month-year {
-  font-size:1.1rem; letter-spacing:8px;
-  font-family:'Cinzel',serif; color:rgba(255,215,0,.6);
+  font-size:1rem; letter-spacing:7px;
+  font-family:'Cinzel',serif; color:rgba(255,215,0,.55);
   margin:4px 0;
 }
 .day-script {
-  font-size:1.8rem;
-  font-family:'Great Vibes', cursive;
-  color:var(--rose);
+  font-size:1.7rem; font-family:'Great Vibes',cursive; color:var(--rose);
 }
 .event-list {
-  list-style:none; margin-top:14px;
+  list-style:none; margin-top:12px;
   font-family:'Lato',sans-serif; font-weight:300;
-  font-size:.8rem; line-height:2.3;
-  color:rgba(255,255,255,.7);
+  font-size:.78rem; line-height:2.2; color:rgba(255,255,255,.7);
 }
+
+/* ring exchange image placeholder (ring-anim removed, using photo) */
+
+/* ====================================================
+   SLIDE 4 — GOPURAM (large, golden)
+===================================================== */
+.gopuram-bg {
+  position:absolute; bottom:0; left:50%; transform:translateX(-50%);
+  pointer-events:none;
+}
+@keyframes gopuramGlow {
+  0%,100% { opacity:.14; filter:drop-shadow(0 0 6px rgba(255,180,0,.2)); }
+  50%      { opacity:.22; filter:drop-shadow(0 0 18px rgba(255,180,0,.4)); }
+}
+.gopuram-bg { animation:gopuramGlow 4s ease-in-out infinite; }
 
 /* ====================================================
    SLIDE 5 — VENUE
 ===================================================== */
 .pin-icon {
-  font-size:2.2rem; display:block;
-  margin-bottom:8px;
+  font-size:2.2rem; display:block; margin-bottom:8px;
   animation:pinbounce 1.8s ease-in-out infinite;
 }
 @keyframes pinbounce {
@@ -271,53 +359,45 @@ html, body { width:100%; height:100%; overflow:hidden; background:var(--dark); }
   50%      { transform:translateY(-6px) scale(1.1); }
 }
 .venue-big {
-  font-size:2.1rem; line-height:1.2;
+  font-size:2rem; line-height:1.2;
   font-family:'Great Vibes', cursive;
   color:var(--gold);
 }
 .venue-addr {
   font-family:'Lato',sans-serif; font-weight:300;
-  font-size:.82rem; line-height:2;
-  color:rgba(255,255,255,.65);
-  max-width:265px; margin:8px auto 0;
+  font-size:.8rem; line-height:2;
+  color:rgba(255,255,255,.6); max-width:265px; margin:8px auto 0;
 }
 .map-btn {
-  display:inline-block; margin-top:18px;
-  padding:11px 26px;
-  border:1px solid rgba(0,212,255,.4);
-  border-radius:30px; color:var(--neon);
-  font-family:'Cinzel',serif; font-size:.62rem;
-  letter-spacing:3px; text-decoration:none;
-  text-transform:uppercase;
+  display:inline-block; margin-top:18px; padding:11px 26px;
+  border:1px solid rgba(0,212,255,.4); border-radius:30px;
+  color:var(--neon); font-family:'Cinzel',serif; font-size:.6rem;
+  letter-spacing:3px; text-decoration:none; text-transform:uppercase;
   background:rgba(0,212,255,.04);
-  animation:cyborglow 2.2s ease-in-out infinite;
+  animation:cyborglow 2.5s ease-in-out infinite;
 }
 @keyframes cyborglow {
-  0%,100% { box-shadow:0 0 8px rgba(0,212,255,.2); }
-  50%      { box-shadow:0 0 22px rgba(0,212,255,.55), inset 0 0 8px rgba(0,212,255,.1); }
+  0%,100% { box-shadow:0 0 8px rgba(0,212,255,.15); }
+  50%      { box-shadow:0 0 20px rgba(0,212,255,.45), inset 0 0 8px rgba(0,212,255,.08); }
 }
-/* grid bg for venue slide */
 .grid-bg {
   position:absolute; inset:0; pointer-events:none;
   background-image:
-    linear-gradient(rgba(0,212,255,.03) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(0,212,255,.03) 1px, transparent 1px);
+    linear-gradient(rgba(0,212,255,.025) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(0,212,255,.025) 1px, transparent 1px);
   background-size:28px 28px;
 }
 
 /* ====================================================
-   SLIDE 6 — LOVE
+   SLIDE 6 — LOVE / MANDAP COUPLE
 ===================================================== */
 .love-quote {
-  font-size:1.55rem; line-height:1.55;
+  font-size:1.5rem; line-height:1.55;
   font-family:'Great Vibes', cursive;
-  color:rgba(255,210,210,.9);
-  max-width:280px; margin:0 auto;
-  text-shadow:0 0 20px rgba(255,100,120,.5);
+  color:rgba(255,210,210,.9); max-width:280px; margin:0 auto;
 }
 .heart-float {
-  position:absolute;
-  animation:heartrise linear infinite; opacity:0;
+  position:absolute; animation:heartrise linear infinite; opacity:0;
   font-size:1rem; pointer-events:none;
 }
 @keyframes heartrise {
@@ -326,28 +406,26 @@ html, body { width:100%; height:100%; overflow:hidden; background:var(--dark); }
   100% { transform:translateY(-80vh) scale(.8); opacity:0; }
 }
 
+/* mandap animations removed — using photo in slide 6 */
+
 /* ====================================================
    SLIDE 7 — CLOSING
 ===================================================== */
 .closing-msg {
-  font-size:1.55rem; line-height:1.6;
-  font-family:'Great Vibes', cursive;
-  color:var(--gold);
-  text-shadow:0 0 18px rgba(255,215,0,.6);
+  font-size:1.5rem; line-height:1.6;
+  font-family:'Great Vibes', cursive; color:var(--gold);
   max-width:280px; margin:0 auto;
 }
 .hashtag {
-  font-family:'Cinzel',serif;
-  font-size:.75rem; letter-spacing:2px;
-  color:rgba(255,215,0,.45); margin-top:14px;
+  font-family:'Cinzel',serif; font-size:.72rem;
+  letter-spacing:2px; color:rgba(255,215,0,.4); margin-top:12px;
 }
-.share-row { display:flex; gap:12px; margin-top:18px; justify-content:center; flex-wrap:wrap; }
+.share-row { display:flex; gap:12px; margin-top:16px; justify-content:center; flex-wrap:wrap; }
 .share-btn {
   padding:9px 18px; border-radius:22px;
-  font-family:'Lato',sans-serif; font-size:.65rem;
-  letter-spacing:2px; text-decoration:none;
-  border:1px solid; cursor:pointer;
-  background:transparent;
+  font-family:'Lato',sans-serif; font-size:.63rem;
+  letter-spacing:2px; text-decoration:none; border:1px solid;
+  cursor:pointer; background:transparent;
   transition:background .3s, transform .2s;
 }
 .share-btn:active { transform:scale(.95); }
@@ -359,17 +437,14 @@ html, body { width:100%; height:100%; overflow:hidden; background:var(--dark); }
 /* ====================================================
    CONFETTI (slide 4)
 ===================================================== */
-.conf {
-  position:absolute; top:-10px;
-  animation:conffall linear infinite;
-}
+.conf { position:absolute; top:-10px; animation:conffall linear infinite; }
 @keyframes conffall {
   0%   { transform:translateY(-10px) rotate(0deg);   opacity:1; }
   100% { transform:translateY(105vh) rotate(720deg); opacity:0; }
 }
 
 /* ====================================================
-   PROGRESS DOTS (right side)
+   PROGRESS DOTS
 ===================================================== */
 #dots {
   position:fixed; right:11px; top:50%;
@@ -378,29 +453,22 @@ html, body { width:100%; height:100%; overflow:hidden; background:var(--dark); }
 }
 .dot {
   width:5px; height:5px; border-radius:50%;
-  background:rgba(255,215,0,.22); cursor:pointer;
-  transition:all .35s;
+  background:rgba(255,215,0,.2); cursor:pointer; transition:all .35s;
 }
 .dot.active {
   background:var(--gold);
-  box-shadow:0 0 8px rgba(255,215,0,.8);
-  height:18px; border-radius:3px;
+  box-shadow:0 0 8px rgba(255,215,0,.8); height:18px; border-radius:3px;
 }
-
-/* ====================================================
-   SLIDE NUMBER LABEL (top left)
-===================================================== */
 #slide-label {
   position:fixed; top:14px; left:16px;
   font-family:'Cinzel',serif; font-size:.5rem;
-  letter-spacing:3px; color:rgba(255,215,0,.25);
-  z-index:200; text-transform:uppercase;
+  letter-spacing:3px; color:rgba(255,215,0,.22); z-index:200; text-transform:uppercase;
 }
 </style>
 </head>
 <body>
 
-<!-- ======================== PROGRESS DOTS ======================== -->
+<!-- PROGRESS DOTS -->
 <nav id="dots">
   <div class="dot active" onclick="goTo(0)"></div>
   <div class="dot" onclick="goTo(1)"></div>
@@ -412,454 +480,351 @@ html, body { width:100%; height:100%; overflow:hidden; background:var(--dark); }
 </nav>
 <div id="slide-label">01 / 07</div>
 
-<!-- ======================== SLIDER ======================== -->
 <div id="slider">
 
-  <!-- ══════════════════════════════════════════════
-       SLIDE 1 — COVER
-  ══════════════════════════════════════════════ -->
-  <section class="slide" id="s1">
-    <div class="star-field" id="sf1"></div>
-    <div class="particles"  id="p1"></div>
+<!-- ══════════════════════════════════════════════
+     SLIDE 1 — COVER
+══════════════════════════════════════════════ -->
+<section class="slide" id="s1">
+  <div class="star-field" id="sf1"></div>
+  <div class="particles"  id="p1"></div>
 
-    <!-- Glow rings -->
-    <div class="ring" style="width:270px;height:270px;border-color:rgba(255,215,0,.08);animation-duration:5s;"></div>
-    <div class="ring" style="width:210px;height:210px;border-color:rgba(255,215,0,.14);animation-duration:3.5s;animation-delay:-.8s;"></div>
-    <div class="ring" style="width:150px;height:150px;border-color:rgba(255,215,0,.22);animation-duration:2.5s;animation-delay:-.3s;"></div>
-    <!-- Spinning dashed rings -->
-    <div class="ring spin-cw"  style="width:230px;height:230px;border-color:rgba(255,215,0,.07);border-style:dashed;animation-duration:25s;"></div>
-    <div class="ring spin-ccw" style="width:180px;height:180px;border-color:rgba(242,160,123,.08);border-style:dashed;animation-duration:18s;"></div>
+  <div class="ring" style="width:280px;height:280px;border-color:rgba(255,215,0,.07);animation-duration:5s;"></div>
+  <div class="ring" style="width:215px;height:215px;border-color:rgba(255,215,0,.12);animation-duration:3.5s;animation-delay:-.8s;"></div>
+  <div class="ring" style="width:155px;height:155px;border-color:rgba(255,215,0,.2);animation-duration:2.5s;animation-delay:-.3s;"></div>
+  <div class="ring spin-cw"  style="width:240px;height:240px;border-color:rgba(255,215,0,.06);border-style:dashed;animation-duration:26s;"></div>
+  <div class="ring spin-ccw" style="width:185px;height:185px;border-color:rgba(242,160,123,.07);border-style:dashed;animation-duration:19s;"></div>
 
-    <!-- Temple silhouette -->
-    <svg class="temple-bg" viewBox="0 0 400 190" xmlns="http://www.w3.org/2000/svg" fill="rgba(255,200,80,1)">
-      <!-- Centre gopuram -->
-      <polygon points="175,8 200,8 225,42 236,42 246,75 254,75 262,105 258,105 265,135 135,135 142,105 138,105 146,75 154,75 164,42 175,42"/>
-      <rect x="132" y="135" width="136" height="55"/>
-      <!-- Side finials -->
-      <polygon points="78,52 93,52 105,80 112,80 118,108 122,108 125,132 66,132 70,108 74,108 78,80 85,80"/>
-      <rect x="66" y="132" width="60" height="58"/>
-      <polygon points="295,52 310,52 322,80 329,80 334,108 338,108 334,132 274,132 271,108 275,108 279,80 288,80"/>
-      <rect x="274" y="132" width="60" height="58"/>
-      <!-- Base platform -->
-      <rect x="30" y="160" width="340" height="30"/>
-    </svg>
+  <!-- Temple silhouette -->
+  <svg class="temple-bg" viewBox="0 0 400 190" xmlns="http://www.w3.org/2000/svg" fill="rgba(255,200,80,1)">
+    <polygon points="175,8 200,8 225,42 236,42 246,75 254,75 262,105 258,105 265,135 135,135 142,105 138,105 146,75 154,75 164,42 175,42"/>
+    <rect x="132" y="135" width="136" height="55"/>
+    <polygon points="78,52 93,52 105,80 112,80 118,108 122,108 125,132 66,132 70,108 74,108 78,80 85,80"/>
+    <rect x="66" y="132" width="60" height="58"/>
+    <polygon points="295,52 310,52 322,80 329,80 334,108 338,108 334,132 274,132 271,108 275,108 279,80 288,80"/>
+    <rect x="274" y="132" width="60" height="58"/>
+    <rect x="30" y="160" width="340" height="30"/>
+  </svg>
 
-    <!-- CONTENT -->
-    <p class="cover-label f-sans reveal from-top d1">✦ With the blessings of God &amp; our families ✦</p>
+  <p class="cover-label f-sans reveal from-top d1">✦ With the blessings of God &amp; our families ✦</p>
 
-    <!-- Animated Couple SVG -->
-    <div class="couple-svg-wrap reveal scale-in d2">
-      <svg viewBox="0 0 160 160" xmlns="http://www.w3.org/2000/svg">
-        <defs>
-          <filter id="gf" x="-30%" y="-30%" width="160%" height="160%">
-            <feGaussianBlur stdDeviation="3" result="blur"/>
-            <feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
-          </filter>
-          <linearGradient id="wg" x1="0%" y1="0%" x2="100%" y2="100%">
-            <stop offset="0%"   stop-color="#FFE066"/>
-            <stop offset="100%" stop-color="#C9921C"/>
-          </linearGradient>
-          <linearGradient id="mg" x1="0%" y1="0%" x2="100%" y2="100%">
-            <stop offset="0%"   stop-color="#F2A07B"/>
-            <stop offset="100%" stop-color="#C96B3C"/>
-          </linearGradient>
-        </defs>
+  <!-- ═══ COUPLE PHOTO — slide 1 ═══ -->
+  <img src="img1.png" alt="Nikitha & Hari Viswaa" class="couple-photo reveal scale-in d2">
 
-        <!-- ── Woman (left) ── -->
-        <g filter="url(#gf)" fill="url(#wg)">
-          <!-- Head -->
-          <ellipse cx="52" cy="26" rx="10" ry="11"/>
-          <!-- Hair / bun -->
-          <ellipse cx="52" cy="16" rx="6" ry="5.5"/>
-          <ellipse cx="58" cy="14" rx="4" ry="3"/>
-          <!-- Body (sari drape) -->
-          <path d="M39,37 Q52,32 65,37 L68,92 Q60,97 52,95 Q44,97 36,92 Z"/>
-          <!-- Sari pallu drape -->
-          <path d="M39,55 Q29,65 31,82 Q28,78 26,88" stroke="url(#wg)" stroke-width="4" fill="none" stroke-linecap="round" opacity=".7"/>
-          <!-- Right arm reaching groom -->
-          <path d="M65,50 Q76,56 80,62" stroke="url(#wg)" stroke-width="4.5" fill="none" stroke-linecap="round"/>
-          <!-- Legs -->
-          <ellipse cx="46" cy="103" rx="5.5" ry="14"/>
-          <ellipse cx="58" cy="103" rx="5.5" ry="14"/>
-          <!-- Bindi dot -->
-          <circle cx="52" cy="22" r="1.5" fill="#FF6B6B" filter="url(#gf)"/>
-          <!-- Jewel -->
-          <ellipse cx="52" cy="37" rx="2" ry="1.5" fill="#FFD700" opacity=".9"/>
-        </g>
+  <h1 class="main-name f-script glow reveal from-bottom d3">Nikitha &amp; Hari Viswaa</h1>
 
-        <!-- ── Man (right) ── -->
-        <g filter="url(#gf)" fill="url(#mg)">
-          <!-- Head -->
-          <ellipse cx="108" cy="23" rx="10" ry="11"/>
-          <!-- Body (sherwani — longer) -->
-          <path d="M95,34 Q108,29 121,34 L124,96 Q116,101 108,99 Q100,101 92,96 Z"/>
-          <!-- Left arm reaching woman -->
-          <path d="M95,49 Q84,55 80,61" stroke="url(#mg)" stroke-width="4.5" fill="none" stroke-linecap="round"/>
-          <!-- Sherwani buttons -->
-          <circle cx="108" cy="50" r="1.5" fill="rgba(255,215,0,.6)"/>
-          <circle cx="108" cy="60" r="1.5" fill="rgba(255,215,0,.6)"/>
-          <circle cx="108" cy="70" r="1.5" fill="rgba(255,215,0,.6)"/>
-          <!-- Legs -->
-          <ellipse cx="101" cy="110" rx="5.5" ry="17"/>
-          <ellipse cx="115" cy="110" rx="5.5" ry="17"/>
-        </g>
+  <div class="divider reveal scale-in d4">
+    <div class="div-line"></div>
+    <span class="div-gem">♦</span>
+    <div class="div-line r"></div>
+  </div>
 
-        <!-- Joined hands glow -->
-        <ellipse cx="80" cy="62" rx="5" ry="4" fill="#FFD700" filter="url(#gf)" opacity=".9"/>
+  <p class="f-serif reveal from-bottom d4" style="font-size:.58rem;letter-spacing:4px;text-transform:uppercase;color:rgba(255,255,255,.32);">
+    Cordially invite you to celebrate their wedding
+  </p>
 
-        <!-- Heart above -->
-        <text x="80" y="10" font-size="16" fill="#FF9BB0" text-anchor="middle" filter="url(#gf)" opacity=".9"
-          style="animation:none">♥</text>
+  <div class="swipe-hint">
+    <span>Swipe Up</span>
+    <div class="chevron-box">
+      <div class="chev"></div>
+      <div class="chev" style="margin-top:-3px;opacity:.5;"></div>
+    </div>
+  </div>
+</section>
 
-        <!-- Glow circles behind couple -->
-        <circle cx="80" cy="70" r="55" fill="none" stroke="rgba(255,215,0,.07)" stroke-width="1"/>
-        <circle cx="80" cy="70" r="45" fill="none" stroke="rgba(255,215,0,.1)" stroke-width="1"/>
-      </svg>
+
+<!-- ══════════════════════════════════════════════
+     SLIDE 2 — NAMES
+══════════════════════════════════════════════ -->
+<section class="slide" id="s2">
+  <div class="star-field" id="sf2"></div>
+  <div class="particles"  id="p2"></div>
+
+  <div class="ring spin-cw"  style="width:265px;height:265px;border:1px dashed rgba(255,215,0,.09);animation-duration:28s;"></div>
+  <div class="ring spin-ccw" style="width:200px;height:200px;border:1px dashed rgba(242,160,123,.12);animation-duration:20s;"></div>
+  <div class="ring spin-cw"  style="width:145px;height:145px;border:1px solid rgba(255,215,0,.09);animation-duration:14s;"></div>
+
+  <svg class="temple-bg" viewBox="0 0 400 130" xmlns="http://www.w3.org/2000/svg" fill="rgba(180,120,40,1)">
+    <polygon points="175,5 200,5 225,38 236,38 246,68 254,68 262,95 138,95 146,68 154,68 164,38 175,38" opacity=".5"/>
+    <rect x="138" y="95" width="124" height="35" opacity=".5"/>
+  </svg>
+
+  <div style="position:relative;z-index:5;">
+    <p class="f-serif reveal from-top d1" style="font-size:.56rem;letter-spacing:5px;text-transform:uppercase;color:rgba(255,215,0,.35);margin-bottom:16px;">
+      The Wedding of
+    </p>
+
+    <h2 class="bride-name glow reveal from-left d2">Nikitha R</h2>
+    <span class="and-glyph glow-rose reveal scale-in d3">&amp;</span>
+    <h2 class="groom-name glow reveal from-right d4">Hari Viswaa G G</h2>
+
+    <div class="divider reveal scale-in d5" style="margin-top:20px;">
+      <div class="div-line"></div>
+      <span class="div-gem">✦</span>
+      <div class="div-line r"></div>
     </div>
 
-    <h1 class="main-name f-script glow reveal from-bottom d3">Nikitha &amp; Hari Viswaa</h1>
+    <p class="f-sans reveal from-bottom d6" style="font-size:.62rem;letter-spacing:5px;text-transform:uppercase;color:rgba(255,255,255,.28);margin-top:6px;">
+      Two Souls &nbsp;·&nbsp; One Destiny
+    </p>
+  </div>
+</section>
 
-    <div class="divider reveal scale-in d4">
+
+<!-- ══════════════════════════════════════════════
+     SLIDE 3 — ENGAGEMENT CEREMONY  (17 May)
+══════════════════════════════════════════════ -->
+<section class="slide" id="s3">
+  <div class="star-field" id="sf3"></div>
+  <div class="particles"  id="p3"></div>
+
+  <div class="ring" style="width:245px;height:245px;border-color:rgba(255,160,80,.1);animation-duration:4s;"></div>
+  <div class="ring spin-cw" style="width:190px;height:190px;border:1px dashed rgba(255,160,80,.07);animation-duration:22s;"></div>
+
+  <!-- Warm background temple -->
+  <svg class="temple-bg" viewBox="0 0 400 130" xmlns="http://www.w3.org/2000/svg" fill="rgba(220,120,40,1)">
+    <polygon points="165,0 200,0 235,50 255,50 275,95 125,95 145,50 165,50" opacity=".32"/>
+    <rect x="125" y="95" width="150" height="35" opacity=".32"/>
+  </svg>
+
+  <div style="position:relative;z-index:5;">
+    <div class="event-chip f-serif reveal from-top d1" style="border-color:rgba(255,180,80,.5);color:rgba(255,200,100,.8);">💍 Day One</div>
+
+    <p class="f-serif reveal from-top d2" style="font-size:.56rem;letter-spacing:5px;text-transform:uppercase;color:rgba(255,180,80,.6);margin-bottom:10px;">
+      Engagement Ceremony
+    </p>
+
+    <div class="big-num glow reveal scale-in d2">17</div>
+
+    <div class="divider reveal scale-in d3">
+      <div class="div-line" style="width:28px;"></div>
+      <span class="f-serif" style="font-size:1.1rem;color:rgba(255,215,0,.65);">May</span>
+      <div class="div-line r" style="width:28px;"></div>
+    </div>
+    <div class="month-year f-serif reveal from-bottom d3">2 &thinsp; 0 &thinsp; 2 &thinsp; 6</div>
+    <p class="day-script reveal from-bottom d4">Sunday</p>
+
+    <!-- Ring exchange photo -->
+    <img src="img2.png" alt="Ring Exchange" class="couple-photo-sm reveal scale-in d4">
+
+    <ul class="event-list reveal from-bottom d5">
+      <li>💍 &nbsp;Ring Exchange &amp; Engagement Rituals</li>
+      <li>🎊 &nbsp;Grand Celebration &amp; Family Blessings</li>
+      <li>🎶 &nbsp;DJ Night &amp; Festive Celebrations</li>
+    </ul>
+  </div>
+</section>
+
+
+<!-- ══════════════════════════════════════════════
+     SLIDE 4 — WEDDING CEREMONY  (18 May)
+══════════════════════════════════════════════ -->
+<section class="slide" id="s4">
+  <div class="star-field" id="sf4"></div>
+  <div class="particles"  id="p4"></div>
+  <div id="confBox"></div>
+
+  <div class="ring" style="width:255px;height:255px;border-color:rgba(0,212,255,.09);animation-duration:4s;"></div>
+  <div class="ring spin-cw" style="width:200px;height:200px;border:1px dashed rgba(0,212,255,.06);animation-duration:22s;"></div>
+
+  <!-- Large prominent Gopuram -->
+  <svg class="gopuram-bg" viewBox="0 0 340 230" width="340" xmlns="http://www.w3.org/2000/svg">
+    <defs>
+      <linearGradient id="gopG" x1="50%" y1="0%" x2="50%" y2="100%">
+        <stop offset="0%"   stop-color="rgba(255,215,80,.55)"/>
+        <stop offset="60%"  stop-color="rgba(255,180,40,.3)"/>
+        <stop offset="100%" stop-color="rgba(255,150,0,.15)"/>
+      </linearGradient>
+    </defs>
+    <!-- Centre main tower -->
+    <polygon points="140,4 170,4 200,4 230,4 240,30 250,30 258,58 264,58 270,88 268,88 274,118 66,118 72,88 70,88 76,58 82,58 90,30 100,30" fill="url(#gopG)"/>
+    <rect x="70" y="118" width="200" height="68" fill="url(#gopG)" opacity=".9"/>
+    <!-- Decorative horizontal bands -->
+    <rect x="72"  y="130" width="196" height="4" fill="rgba(255,215,0,.25)" rx="1"/>
+    <rect x="74"  y="145" width="192" height="3" fill="rgba(255,215,0,.2)"  rx="1"/>
+    <rect x="76"  y="158" width="188" height="3" fill="rgba(255,215,0,.2)"  rx="1"/>
+    <!-- Arched window -->
+    <path d="M163,130 Q185,108 207,130" fill="rgba(255,215,0,.12)" stroke="rgba(255,215,0,.3)" stroke-width="1"/>
+    <!-- Left small tower -->
+    <polygon points="30,60 46,60 58,88 66,88 70,118 18,118 22,88 30,88 38,70" fill="url(#gopG)" opacity=".75"/>
+    <rect x="18" y="118" width="52" height="68" fill="url(#gopG)" opacity=".6"/>
+    <!-- Right small tower -->
+    <polygon points="310,60 294,60 282,88 274,88 270,118 322,118 318,88 310,88 302,70" fill="url(#gopG)" opacity=".75"/>
+    <rect x="270" y="118" width="52" height="68" fill="url(#gopG)" opacity=".6"/>
+    <!-- Kalasha finials (top ornaments) -->
+    <circle cx="185" cy="8"  r="7"  fill="rgba(255,215,0,.6)"/>
+    <circle cx="185" cy="2"  r="4"  fill="rgba(255,215,0,.8)"/>
+    <circle cx="38"  cy="63" r="4.5" fill="rgba(255,215,0,.4)"/>
+    <circle cx="302" cy="63" r="4.5" fill="rgba(255,215,0,.4)"/>
+    <!-- Base platform -->
+    <rect x="0" y="186" width="340" height="22" fill="rgba(255,180,0,.2)" rx="2"/>
+  </svg>
+
+  <div style="position:relative;z-index:5;">
+    <div class="event-chip f-serif reveal from-top d1" style="border-color:rgba(0,212,255,.4);color:rgba(0,212,255,.75);">💒 Day Two</div>
+
+    <p class="f-serif reveal from-top d2" style="font-size:.56rem;letter-spacing:5px;text-transform:uppercase;color:rgba(0,212,255,.45);margin-bottom:10px;">
+      Wedding Ceremony
+    </p>
+
+    <div class="big-num glow-cyan reveal scale-in d2">18</div>
+
+    <div class="divider reveal scale-in d3">
+      <div class="div-line" style="width:28px;background:linear-gradient(to right,transparent,rgba(0,212,255,.45));"></div>
+      <span class="f-serif" style="font-size:1.1rem;color:rgba(0,212,255,.65);">May</span>
+      <div class="div-line r" style="width:28px;background:linear-gradient(to left,transparent,rgba(0,212,255,.45));"></div>
+    </div>
+    <div class="month-year f-serif reveal from-bottom d3" style="color:rgba(0,212,255,.42);">2 &thinsp; 0 &thinsp; 2 &thinsp; 6</div>
+    <p class="day-script reveal from-bottom d4" style="color:#85cfff;">Monday</p>
+
+    <!-- Traditional couple photo -->
+    <img src="img3.png" alt="Wedding Ceremony" class="couple-photo-sm reveal scale-in d4">
+
+    <ul class="event-list reveal from-bottom d5">
+      <li>🪔 &nbsp;Sacred Muhurtham &amp; Wedding Rituals</li>
+      <li>🌸 &nbsp;Saptapadi &amp; Holy Ceremony</li>
+      <li>🥂 &nbsp;Grand Feast &amp; Reception</li>
+    </ul>
+  </div>
+</section>
+
+
+<!-- ══════════════════════════════════════════════
+     SLIDE 5 — VENUE
+══════════════════════════════════════════════ -->
+<section class="slide" id="s5">
+  <div class="star-field" id="sf5"></div>
+  <div class="particles"  id="p5"></div>
+  <div class="grid-bg"></div>
+
+  <div class="ring" style="width:265px;height:265px;border-color:rgba(150,100,255,.09);animation-duration:5s;"></div>
+  <div class="ring spin-ccw" style="width:195px;height:195px;border:1px dashed rgba(150,100,255,.06);animation-duration:24s;"></div>
+
+  <div style="position:relative;z-index:5;">
+    <span class="pin-icon reveal from-top d1">📍</span>
+
+    <p class="f-serif reveal from-top d2" style="font-size:.56rem;letter-spacing:5px;text-transform:uppercase;color:rgba(255,215,0,.35);margin-bottom:6px;">
+      The Venue
+    </p>
+
+    <h3 class="venue-big glow reveal scale-in d2">LKS Mahal Aristo</h3>
+
+    <div class="divider reveal scale-in d3">
       <div class="div-line"></div>
       <span class="div-gem">♦</span>
       <div class="div-line r"></div>
     </div>
 
-    <p class="f-serif reveal from-bottom d4" style="font-size:.6rem;letter-spacing:4px;text-transform:uppercase;color:rgba(255,255,255,.35);">
-      Cordially invite you to celebrate their wedding
+    <address class="venue-addr reveal from-bottom d4" style="font-style:normal;">
+      No. 2, Trichy-Dindigul Road<br>
+      Near Aristo Roundana<br>
+      Tiruchirappalli, Tamil Nadu<br>
+      <span style="color:rgba(255,215,0,.38);">— 620 001 —</span>
+    </address>
+
+    <a href="https://maps.google.com/?q=LKS+Mahal+Aristo+Trichy+No+2+Trichy+Dindigul+Road" target="_blank" rel="noopener"
+       class="map-btn reveal from-bottom d5">
+      📌 &nbsp; Open in Google Maps
+    </a>
+  </div>
+</section>
+
+
+<!-- ══════════════════════════════════════════════
+     SLIDE 6 — LOVE STORY / MANDAP COUPLE
+══════════════════════════════════════════════ -->
+<section class="slide" id="s6">
+  <div class="star-field" id="sf6"></div>
+  <div class="particles"  id="p6"></div>
+  <div id="heartsBox"></div>
+
+  <div class="ring" style="width:258px;height:258px;border-color:rgba(255,100,120,.09);animation-duration:4.5s;"></div>
+  <div class="ring spin-cw" style="width:192px;height:192px;border:1px dashed rgba(255,100,120,.06);animation-duration:26s;"></div>
+
+  <svg class="temple-bg" viewBox="0 0 400 110" xmlns="http://www.w3.org/2000/svg" fill="rgba(160,40,60,1)">
+    <polygon points="170,0 200,0 230,42 250,42 268,82 132,82 150,42 170,42" opacity=".22"/>
+    <rect x="132" y="82" width="136" height="28" opacity=".22"/>
+  </svg>
+
+  <div style="position:relative;z-index:5;width:100%;max-width:360px;margin:0 auto;">
+    <p class="f-serif reveal from-top d1" style="font-size:.56rem;letter-spacing:5px;text-transform:uppercase;color:rgba(255,120,140,.38);margin-bottom:10px;">
+      A Love Written in the Stars
     </p>
 
-    <div class="swipe-hint">
-      <span>Swipe Up</span>
-      <div class="chevron-box">
-        <div class="chev"></div>
-        <div class="chev" style="margin-top:-3px;opacity:.5;"></div>
-      </div>
+    <div class="divider reveal scale-in d1">
+      <div class="div-line" style="background:linear-gradient(to right,transparent,rgba(255,100,130,.4));"></div>
+      <span class="div-gem" style="color:rgba(255,100,130,.55);">♥</span>
+      <div class="div-line r" style="background:linear-gradient(to left,transparent,rgba(255,100,130,.4));"></div>
     </div>
-  </section>
+
+    <!-- Just Married couple photo -->
+    <img src="img4.png" alt="Just Married" class="couple-photo-wide reveal scale-in d2">
+
+    <blockquote class="love-quote reveal from-bottom d4" style="margin-top:4px;font-size:1.35rem;">
+      "Where two hearts meet,<br>love finds its home"
+    </blockquote>
+  </div>
+</section>
 
 
-  <!-- ══════════════════════════════════════════════
-       SLIDE 2 — NAMES
-  ══════════════════════════════════════════════ -->
-  <section class="slide" id="s2">
-    <div class="star-field" id="sf2"></div>
-    <div class="particles"  id="p2"></div>
+<!-- ══════════════════════════════════════════════
+     SLIDE 7 — CLOSING / BLESSINGS
+══════════════════════════════════════════════ -->
+<section class="slide" id="s7">
+  <div class="star-field" id="sf7"></div>
+  <div class="particles"  id="p7"></div>
 
-    <!-- Mandala rings -->
-    <div class="ring spin-cw"  style="width:260px;height:260px;border:1px dashed rgba(255,215,0,.1);animation-duration:28s;"></div>
-    <div class="ring spin-ccw" style="width:200px;height:200px;border:1px dashed rgba(242,160,123,.13);animation-duration:20s;"></div>
-    <div class="ring spin-cw"  style="width:145px;height:145px;border:1px solid rgba(255,215,0,.1);animation-duration:14s;"></div>
+  <div class="ring" style="width:285px;height:285px;border-color:rgba(255,215,0,.06);animation-duration:5.5s;"></div>
+  <div class="ring" style="width:218px;height:218px;border-color:rgba(255,215,0,.1);animation-duration:4s;animation-delay:-.6s;"></div>
+  <div class="ring spin-cw"  style="width:172px;height:172px;border:1px dashed rgba(255,215,0,.06);animation-duration:30s;"></div>
+  <div class="ring spin-ccw" style="width:132px;height:132px;border:1px dashed rgba(255,215,0,.08);animation-duration:22s;"></div>
 
-    <svg class="temple-bg" viewBox="0 0 400 130" xmlns="http://www.w3.org/2000/svg" fill="rgba(180,120,40,1)">
-      <polygon points="175,5 200,5 225,38 236,38 246,68 254,68 262,95 138,95 146,68 154,68 164,38 175,38" opacity=".5"/>
-      <rect x="138" y="95" width="124" height="35" opacity=".5"/>
-    </svg>
+  <svg class="temple-bg" viewBox="0 0 400 190" xmlns="http://www.w3.org/2000/svg" fill="rgba(255,180,60,.9)">
+    <polygon points="175,8 200,8 225,42 236,42 246,75 254,75 262,105 258,105 265,135 135,135 142,105 138,105 146,75 154,75 164,42 175,42" opacity=".18"/>
+    <rect x="132" y="135" width="136" height="55" opacity=".18"/>
+    <polygon points="78,52 93,52 105,80 112,80 118,108 122,108 125,132 66,132 70,108 74,108 78,80 85,80" opacity=".18"/>
+    <rect x="66" y="132" width="60" height="58" opacity=".18"/>
+  </svg>
 
-    <div style="position:relative;z-index:5;">
-      <p class="f-serif reveal from-top d1" style="font-size:.58rem;letter-spacing:5px;text-transform:uppercase;color:rgba(255,215,0,.38);margin-bottom:18px;">
-        The Wedding of
-      </p>
+  <div style="position:relative;z-index:5;">
+    <div class="reveal from-top d1" style="font-size:2.3rem;animation:coupleFloat 4s ease-in-out infinite;display:inline-block;">🙏</div>
 
-      <h2 class="bride-name glow reveal from-left d2">Nikitha R</h2>
-      <span class="and-glyph reveal scale-in d3">&amp;</span>
-      <h2 class="groom-name glow reveal from-right d4" style="font-size:3.4rem;color:var(--gold);font-family:'Great Vibes',cursive;line-height:1;">Hari Viswaa G G</h2>
+    <p class="f-serif reveal from-top d2" style="font-size:.56rem;letter-spacing:5px;text-transform:uppercase;color:rgba(255,215,0,.32);margin:10px 0 14px;">
+      You are warmly invited
+    </p>
 
-      <div class="divider reveal scale-in d5" style="margin-top:20px;">
-        <div class="div-line"></div>
-        <span class="div-gem">✦</span>
-        <div class="div-line r"></div>
-      </div>
+    <blockquote class="closing-msg glow reveal scale-in d3">
+      "Your presence is<br>our greatest blessing"
+    </blockquote>
 
-      <p class="f-sans reveal from-bottom d6" style="font-size:.65rem;letter-spacing:5px;text-transform:uppercase;color:rgba(255,255,255,.3);margin-top:6px;">
-        Two Souls &nbsp;·&nbsp; One Destiny
-      </p>
+    <div class="divider reveal scale-in d4" style="margin-top:14px;">
+      <div class="div-line"></div>
+      <span class="div-gem">✦</span>
+      <div class="div-line r"></div>
     </div>
-  </section>
 
+    <p class="f-serif reveal from-bottom d4" style="font-size:.72rem;letter-spacing:2px;color:rgba(255,255,255,.72);margin:10px 0 4px;">
+      17th &amp; 18th May 2026
+    </p>
+    <p class="f-sans reveal from-bottom d5" style="font-size:.68rem;color:rgba(255,255,255,.28);letter-spacing:1px;">
+      LKS Mahal Aristo &nbsp;·&nbsp; Tiruchirappalli
+    </p>
 
-  <!-- ══════════════════════════════════════════════
-       SLIDE 3 — WEDDING CEREMONY  (17 May)
-  ══════════════════════════════════════════════ -->
-  <section class="slide" id="s3">
-    <div class="star-field" id="sf3"></div>
-    <div class="particles"  id="p3"></div>
+    <p class="hashtag reveal from-bottom d5">#NikiViswaaWedding2026</p>
 
-    <div class="ring" style="width:240px;height:240px;border-color:rgba(80,255,140,.1);animation-duration:4s;"></div>
-
-    <svg class="temple-bg" viewBox="0 0 400 130" xmlns="http://www.w3.org/2000/svg" fill="rgba(60,180,90,1)">
-      <polygon points="165,0 200,0 235,50 255,50 275,95 125,95 145,50 165,50" opacity=".35"/>
-      <rect x="125" y="95" width="150" height="35" opacity=".35"/>
-    </svg>
-
-    <!-- Lotus ornament top -->
-    <svg style="width:70px;opacity:.25;margin-bottom:4px;" viewBox="0 0 80 40" xmlns="http://www.w3.org/2000/svg" fill="#FFD700">
-      <ellipse cx="40" cy="36" rx="20" ry="10"/>
-      <path d="M30,36 Q33,10 40,2 Q47,10 50,36"/>
-      <path d="M18,36 Q16,15 25,6 Q27,22 22,36"/>
-      <path d="M62,36 Q64,15 55,6 Q53,22 58,36"/>
-    </svg>
-
-    <div style="position:relative;z-index:5;">
-      <div class="event-chip f-serif reveal from-top d1" style="border-color:rgba(80,255,140,.4);color:rgba(80,255,140,.7);">🌸 Day One</div>
-
-      <p class="f-serif reveal from-top d2" style="font-size:.58rem;letter-spacing:5px;text-transform:uppercase;color:rgba(255,215,0,.42);margin-bottom:10px;">
-        Wedding Ceremony
-      </p>
-
-      <div class="big-num glow reveal scale-in d2">17</div>
-
-      <div class="divider reveal scale-in d3">
-        <div class="div-line" style="width:28px;"></div>
-        <span class="f-serif" style="font-size:1.15rem;color:rgba(255,215,0,.7);">May</span>
-        <div class="div-line r" style="width:28px;"></div>
-      </div>
-      <div class="month-year f-serif reveal from-bottom d3">2 &thinsp; 0 &thinsp; 2 &thinsp; 6</div>
-
-      <p class="day-script reveal from-bottom d4">Sunday</p>
-
-      <div class="divider reveal scale-in d4" style="margin-top:14px;">
-        <div class="div-line"></div>
-        <span class="div-gem" style="color:rgba(80,255,140,.5);">✦</span>
-        <div class="div-line r"></div>
-      </div>
-
-      <ul class="event-list reveal from-bottom d5">
-        <li>🪔 &nbsp;Muhurtham &amp; Wedding Rituals</li>
-        <li>👨‍👩‍👧‍👦 &nbsp;Family Gathering &amp; Blessings</li>
-        <li>🌸 &nbsp;Sacred Ceremony</li>
-      </ul>
+    <div class="share-row reveal from-bottom d6">
+      <button class="share-btn wa-btn" onclick="shareWA()">💬 WhatsApp</button>
+      <button class="share-btn cp-btn" onclick="copyLink()">🔗 Copy Link</button>
     </div>
-  </section>
-
-
-  <!-- ══════════════════════════════════════════════
-       SLIDE 4 — GRAND RECEPTION  (18 May)
-  ══════════════════════════════════════════════ -->
-  <section class="slide" id="s4">
-    <div class="star-field" id="sf4"></div>
-    <div class="particles"  id="p4"></div>
-    <div id="confBox"></div>
-
-    <div class="ring" style="width:250px;height:250px;border-color:rgba(0,212,255,.1);animation-duration:4s;"></div>
-    <div class="ring spin-cw" style="width:200px;height:200px;border:1px dashed rgba(0,212,255,.07);animation-duration:22s;"></div>
-
-    <svg class="temple-bg" viewBox="0 0 400 130" xmlns="http://www.w3.org/2000/svg" fill="rgba(0,100,200,.8)">
-      <polygon points="165,0 200,0 235,50 255,50 275,95 125,95 145,50 165,50" opacity=".25"/>
-      <rect x="125" y="95" width="150" height="35" opacity=".25"/>
-    </svg>
-
-    <div style="position:relative;z-index:5;">
-      <div class="event-chip f-serif reveal from-top d1" style="border-color:rgba(0,212,255,.4);color:rgba(0,212,255,.75);">🎉 Day Two</div>
-
-      <p class="f-serif reveal from-top d2" style="font-size:.58rem;letter-spacing:5px;text-transform:uppercase;color:rgba(0,212,255,.45);margin-bottom:10px;">
-        Grand Reception
-      </p>
-
-      <div class="big-num reveal scale-in d2" style="color:var(--neon);text-shadow:0 0 28px rgba(0,212,255,.9),0 0 56px rgba(0,212,255,.5);animation:textglow 3s ease-in-out infinite;">18</div>
-
-      <div class="divider reveal scale-in d3">
-        <div class="div-line" style="width:28px;background:linear-gradient(to right,transparent,rgba(0,212,255,.5));"></div>
-        <span class="f-serif" style="font-size:1.15rem;color:rgba(0,212,255,.7);">May</span>
-        <div class="div-line r" style="width:28px;background:linear-gradient(to left,transparent,rgba(0,212,255,.5));"></div>
-      </div>
-      <div class="month-year f-serif reveal from-bottom d3" style="color:rgba(0,212,255,.45);">2 &thinsp; 0 &thinsp; 2 &thinsp; 6</div>
-
-      <p class="day-script reveal from-bottom d4" style="color:#85cfff;">Monday</p>
-
-      <div class="divider reveal scale-in d4" style="margin-top:14px;">
-        <div class="div-line" style="background:linear-gradient(to right,transparent,rgba(0,212,255,.5));"></div>
-        <span class="div-gem" style="color:rgba(0,212,255,.5);">✦</span>
-        <div class="div-line r" style="background:linear-gradient(to left,transparent,rgba(0,212,255,.5));"></div>
-      </div>
-
-      <ul class="event-list reveal from-bottom d5">
-        <li>🎊 &nbsp;Grand Celebration &amp; Feast</li>
-        <li>💃 &nbsp;Music &amp; Dance</li>
-        <li>🥂 &nbsp;Dinner &amp; Festivities</li>
-      </ul>
-    </div>
-  </section>
-
-
-  <!-- ══════════════════════════════════════════════
-       SLIDE 5 — VENUE
-  ══════════════════════════════════════════════ -->
-  <section class="slide" id="s5">
-    <div class="star-field" id="sf5"></div>
-    <div class="particles"  id="p5"></div>
-    <div class="grid-bg"></div>
-
-    <div class="ring" style="width:260px;height:260px;border-color:rgba(150,100,255,.1);animation-duration:5s;"></div>
-    <div class="ring spin-ccw" style="width:190px;height:190px;border:1px dashed rgba(150,100,255,.07);animation-duration:24s;"></div>
-
-    <div style="position:relative;z-index:5;">
-      <span class="pin-icon reveal from-top d1">📍</span>
-
-      <p class="f-serif reveal from-top d2" style="font-size:.58rem;letter-spacing:5px;text-transform:uppercase;color:rgba(255,215,0,.38);margin-bottom:6px;">
-        The Venue
-      </p>
-
-      <h3 class="venue-big glow reveal scale-in d2">LKS Mahal Aristo</h3>
-
-      <div class="divider reveal scale-in d3">
-        <div class="div-line"></div>
-        <span class="div-gem">♦</span>
-        <div class="div-line r"></div>
-      </div>
-
-      <address class="venue-addr reveal from-bottom d4" style="font-style:normal;">
-        No. 2, Trichy-Dindigul Road<br>
-        Near Aristo Roundana<br>
-        Tiruchirappalli, Tamil Nadu<br>
-        <span style="color:rgba(255,215,0,.38);">— 620 001 —</span>
-      </address>
-
-      <a href="https://maps.google.com/?q=LKS+Mahal+Aristo+Trichy+No+2+Trichy+Dindigul+Road" target="_blank" rel="noopener"
-         class="map-btn reveal from-bottom d5">
-        📌 &nbsp; Open in Google Maps
-      </a>
-    </div>
-  </section>
-
-
-  <!-- ══════════════════════════════════════════════
-       SLIDE 6 — LOVE STORY
-  ══════════════════════════════════════════════ -->
-  <section class="slide" id="s6">
-    <div class="star-field" id="sf6"></div>
-    <div class="particles"  id="p6"></div>
-    <div id="heartsBox"></div>
-
-    <div class="ring" style="width:255px;height:255px;border-color:rgba(255,100,120,.1);animation-duration:4.5s;"></div>
-    <div class="ring spin-cw" style="width:190px;height:190px;border:1px dashed rgba(255,100,120,.07);animation-duration:26s;"></div>
-
-    <svg class="temple-bg" viewBox="0 0 400 110" xmlns="http://www.w3.org/2000/svg" fill="rgba(160,40,60,1)">
-      <polygon points="170,0 200,0 230,42 250,42 268,82 132,82 150,42 170,42" opacity=".25"/>
-      <rect x="132" y="82" width="136" height="28" opacity=".25"/>
-    </svg>
-
-    <div style="position:relative;z-index:5;">
-      <div class="reveal from-top d1" style="font-size:2.5rem;animation:float 3.5s ease-in-out infinite;display:inline-block;">💕</div>
-
-      <p class="f-serif reveal from-top d2" style="font-size:.58rem;letter-spacing:5px;text-transform:uppercase;color:rgba(255,120,140,.4);margin:12px 0 14px;">
-        A Love Written in the Stars
-      </p>
-
-      <div class="divider reveal scale-in d2">
-        <div class="div-line" style="background:linear-gradient(to right,transparent,rgba(255,100,130,.5));"></div>
-        <span class="div-gem" style="color:rgba(255,100,130,.6);">♥</span>
-        <div class="div-line r" style="background:linear-gradient(to left,transparent,rgba(255,100,130,.5));"></div>
-      </div>
-
-      <blockquote class="love-quote reveal scale-in d3" style="margin-top:14px;">
-        "Where two hearts meet,<br>love finds its home"
-      </blockquote>
-
-      <div class="divider reveal scale-in d4" style="margin-top:14px;">
-        <div class="div-line" style="background:linear-gradient(to right,transparent,rgba(255,100,130,.5));"></div>
-        <span class="div-gem" style="color:rgba(255,100,130,.6);">♥</span>
-        <div class="div-line r" style="background:linear-gradient(to left,transparent,rgba(255,100,130,.5));"></div>
-      </div>
-
-      <!-- Mini couple under arch -->
-      <div class="reveal from-bottom d5" style="margin-top:14px;opacity:.75;">
-        <svg viewBox="0 0 130 85" width="130" height="85" xmlns="http://www.w3.org/2000/svg">
-          <defs>
-            <filter id="gf2" x="-30%" y="-30%" width="160%" height="160%">
-              <feGaussianBlur stdDeviation="2.5" result="b"/>
-              <feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge>
-            </filter>
-          </defs>
-          <!-- Arch -->
-          <path d="M12,78 Q36,38 65,20 Q94,38 118,78" stroke="rgba(255,180,200,.35)" stroke-width="1.5" fill="none"/>
-          <circle cx="12"  cy="78" r="3" fill="rgba(255,150,180,.5)"/>
-          <circle cx="118" cy="78" r="3" fill="rgba(255,150,180,.5)"/>
-          <!-- Flowers on arch -->
-          <circle cx="65" cy="18" r="4" fill="rgba(255,215,0,.6)" filter="url(#gf2)"/>
-          <circle cx="38" cy="34" r="3" fill="rgba(255,150,180,.5)"/>
-          <circle cx="92" cy="34" r="3" fill="rgba(255,150,180,.5)"/>
-          <!-- Woman -->
-          <g fill="#F2C07B" filter="url(#gf2)">
-            <ellipse cx="40" cy="20" rx="7" ry="8"/>
-            <ellipse cx="40" cy="13" rx="4" ry="3.5"/>
-            <path d="M30,27 Q40,23 50,27 L52,65 Q45,69 40,67 Q35,69 28,65 Z"/>
-            <path d="M50,40 Q58,44 61,49" stroke="#F2C07B" stroke-width="3" fill="none" stroke-linecap="round"/>
-          </g>
-          <!-- Man -->
-          <g fill="#FFD700" filter="url(#gf2)">
-            <ellipse cx="88" cy="18" rx="7" ry="8"/>
-            <path d="M78,25 Q88,21 98,25 L100,66 Q93,70 88,68 Q83,70 76,66 Z"/>
-            <path d="M78,38 Q70,42 67,47" stroke="#FFD700" stroke-width="3" fill="none" stroke-linecap="round"/>
-          </g>
-          <!-- Joined hands -->
-          <ellipse cx="64" cy="49" rx="4" ry="3" fill="#FFD700" opacity=".85" filter="url(#gf2)"/>
-        </svg>
-      </div>
-    </div>
-  </section>
-
-
-  <!-- ══════════════════════════════════════════════
-       SLIDE 7 — CLOSING / BLESSINGS
-  ══════════════════════════════════════════════ -->
-  <section class="slide" id="s7">
-    <div class="star-field" id="sf7"></div>
-    <div class="particles"  id="p7"></div>
-
-    <div class="ring" style="width:280px;height:280px;border-color:rgba(255,215,0,.07);animation-duration:5.5s;"></div>
-    <div class="ring" style="width:215px;height:215px;border-color:rgba(255,215,0,.11);animation-duration:4s;animation-delay:-.6s;"></div>
-    <div class="ring spin-cw"  style="width:170px;height:170px;border:1px dashed rgba(255,215,0,.07);animation-duration:30s;"></div>
-    <div class="ring spin-ccw" style="width:130px;height:130px;border:1px dashed rgba(255,215,0,.09);animation-duration:22s;"></div>
-
-    <svg class="temple-bg" viewBox="0 0 400 190" xmlns="http://www.w3.org/2000/svg" fill="rgba(255,180,60,.9)">
-      <polygon points="175,8 200,8 225,42 236,42 246,75 254,75 262,105 258,105 265,135 135,135 142,105 138,105 146,75 154,75 164,42 175,42" opacity=".2"/>
-      <rect x="132" y="135" width="136" height="55" opacity=".2"/>
-      <polygon points="78,52 93,52 105,80 112,80 118,108 122,108 125,132 66,132 70,108 74,108 78,80 85,80" opacity=".2"/>
-      <rect x="66" y="132" width="60" height="58" opacity=".2"/>
-    </svg>
-
-    <div style="position:relative;z-index:5;">
-      <div class="reveal from-top d1" style="font-size:2.4rem;animation:float 4s ease-in-out infinite;display:inline-block;">🙏</div>
-
-      <p class="f-serif reveal from-top d2" style="font-size:.58rem;letter-spacing:5px;text-transform:uppercase;color:rgba(255,215,0,.35);margin:10px 0 14px;">
-        You are warmly invited
-      </p>
-
-      <blockquote class="closing-msg reveal scale-in d3">
-        "Your presence is<br>our greatest blessing"
-      </blockquote>
-
-      <div class="divider reveal scale-in d4" style="margin-top:14px;">
-        <div class="div-line"></div>
-        <span class="div-gem">✦</span>
-        <div class="div-line r"></div>
-      </div>
-
-      <p class="f-serif reveal from-bottom d4" style="font-size:.75rem;letter-spacing:2px;color:rgba(255,255,255,.75);margin:10px 0 4px;">
-        17th &amp; 18th May 2026
-      </p>
-      <p class="f-sans reveal from-bottom d5" style="font-size:.7rem;color:rgba(255,255,255,.3);letter-spacing:1px;">
-        LKS Mahal Aristo &nbsp;·&nbsp; Tiruchirappalli
-      </p>
-
-      <p class="hashtag reveal from-bottom d5">#NikiViswaaWedding2026</p>
-
-      <div class="share-row reveal from-bottom d6">
-        <button class="share-btn wa-btn" onclick="shareWA()">💬 WhatsApp</button>
-        <button class="share-btn cp-btn" onclick="copyLink()">🔗 Copy Link</button>
-      </div>
-    </div>
-  </section>
+  </div>
+</section>
 
 </div><!-- end #slider -->
 
 
 <!-- ======================== JAVASCRIPT ======================== -->
 <script>
-/* ──────────────────────────────────────────
-   CORE: SLIDES & DOTS
-────────────────────────────────────────── */
+/* ── CORE ── */
 const slider    = document.getElementById('slider');
 const allDots   = document.querySelectorAll('.dot');
 const labelEl   = document.getElementById('slide-label');
@@ -867,105 +832,73 @@ const allSlides = document.querySelectorAll('.slide');
 const total     = allSlides.length;
 
 function pad(n){ return String(n).padStart(2,'0'); }
-
 function updateUI(){
   const idx = Math.round(slider.scrollTop / window.innerHeight);
   allDots.forEach((d,i)=> d.classList.toggle('active', i===idx));
-  labelEl.textContent = pad(idx+1) + ' / ' + pad(total);
+  labelEl.textContent = pad(idx+1)+' / '+pad(total);
 }
-
 slider.addEventListener('scroll', updateUI, { passive:true });
+function goTo(i){ slider.scrollTo({ top: i*window.innerHeight, behavior:'smooth' }); }
 
-function goTo(i){ slider.scrollTo({ top: i * window.innerHeight, behavior:'smooth' }); }
-
-/* ──────────────────────────────────────────
-   INTERSECTION OBSERVER — reveal animations
-────────────────────────────────────────── */
+/* ── INTERSECTION OBSERVER ── */
 const observer = new IntersectionObserver((entries)=>{
   entries.forEach(e=>{
     if(e.isIntersecting) e.target.classList.add('visible');
     else e.target.classList.remove('visible');
   });
-}, { threshold: 0.45 });
-
+}, { threshold:0.45 });
 allSlides.forEach(s=> observer.observe(s));
 
-/* ──────────────────────────────────────────
-   STAR FIELD
-────────────────────────────────────────── */
-function makeStars(containerId, count){
-  const el = document.getElementById(containerId);
+/* ── STAR FIELD ── */
+function makeStars(id, count){
+  const el = document.getElementById(id);
   if(!el) return;
   for(let i=0;i<count;i++){
     const s = document.createElement('div');
-    s.className = 'star';
-    const sz = Math.random()*1.8+.5;
-    s.style.cssText=`
-      width:${sz}px;height:${sz}px;
-      left:${Math.random()*100}%;
-      top:${Math.random()*100}%;
-      animation-duration:${Math.random()*3+2}s;
-      animation-delay:${Math.random()*4}s;
-    `;
+    s.className='star';
+    const sz = Math.random()*1.7+.5;
+    s.style.cssText=`width:${sz}px;height:${sz}px;left:${Math.random()*100}%;top:${Math.random()*100}%;animation-duration:${Math.random()*3+2}s;animation-delay:${Math.random()*4}s;`;
     el.appendChild(s);
   }
 }
-for(let i=1;i<=7;i++) makeStars('sf'+i, 55);
+for(let i=1;i<=7;i++) makeStars('sf'+i, 52);
 
-/* ──────────────────────────────────────────
-   PARTICLES
-────────────────────────────────────────── */
-function makeParticles(containerId, count, colors){
-  const el = document.getElementById(containerId);
+/* ── PARTICLES ── */
+function makeParticles(id, count, colors){
+  const el = document.getElementById(id);
   if(!el) return;
   for(let i=0;i<count;i++){
     const p = document.createElement('div');
     p.className='p';
-    const sz  = Math.random()*2.8+.8;
+    const sz  = Math.random()*2.6+.8;
     const col = colors[Math.floor(Math.random()*colors.length)];
-    p.style.cssText=`
-      width:${sz}px;height:${sz}px;
-      background:${col};
-      left:${Math.random()*100}%;
-      animation-duration:${Math.random()*9+7}s;
-      animation-delay:${Math.random()*9}s;
-      box-shadow:0 0 ${sz*2}px ${col};
-    `;
+    p.style.cssText=`width:${sz}px;height:${sz}px;background:${col};left:${Math.random()*100}%;animation-duration:${Math.random()*9+7}s;animation-delay:${Math.random()*9}s;box-shadow:0 0 ${sz*2}px ${col};`;
     el.appendChild(p);
   }
 }
-makeParticles('p1',28,['rgba(255,215,0,.7)','rgba(255,180,100,.45)','rgba(255,255,255,.3)']);
-makeParticles('p2',22,['rgba(255,215,0,.55)','rgba(200,100,50,.4)']);
-makeParticles('p3',22,['rgba(80,255,140,.45)','rgba(255,215,0,.3)']);
-makeParticles('p4',32,['rgba(0,212,255,.55)','rgba(255,215,0,.3)','rgba(255,100,200,.3)']);
-makeParticles('p5',22,['rgba(150,100,255,.45)','rgba(255,215,0,.3)']);
-makeParticles('p6',22,['rgba(255,100,150,.5)','rgba(255,215,0,.3)']);
-makeParticles('p7',28,['rgba(255,215,0,.6)','rgba(255,180,100,.4)']);
+makeParticles('p1',26,['rgba(255,215,0,.65)','rgba(255,180,100,.4)','rgba(255,255,255,.25)']);
+makeParticles('p2',20,['rgba(255,215,0,.5)','rgba(200,100,50,.38)']);
+makeParticles('p3',22,['rgba(255,180,80,.5)','rgba(255,215,0,.3)','rgba(255,120,160,.3)']);
+makeParticles('p4',30,['rgba(0,212,255,.5)','rgba(255,215,0,.28)','rgba(255,100,200,.28)']);
+makeParticles('p5',20,['rgba(150,100,255,.4)','rgba(255,215,0,.28)']);
+makeParticles('p6',20,['rgba(255,100,150,.48)','rgba(255,215,0,.28)']);
+makeParticles('p7',26,['rgba(255,215,0,.55)','rgba(255,180,100,.38)']);
 
-/* ──────────────────────────────────────────
-   FLOATING HEARTS (slide 6)
-────────────────────────────────────────── */
-const heartsBox = document.getElementById('heartsBox');
+/* ── FLOATING HEARTS (slide 6) ── */
+const heartsBox  = document.getElementById('heartsBox');
 const heartEmoji = ['♥','💕','💖','💗','✨','🌸'];
 function spawnHeart(){
   const h = document.createElement('div');
   h.className='heart-float';
   h.textContent = heartEmoji[Math.floor(Math.random()*heartEmoji.length)];
   const dur = Math.random()*4+5;
-  h.style.cssText=`
-    left:${Math.random()*90+5}%;
-    bottom:0; font-size:${Math.random()*.8+.7}rem;
-    animation-duration:${dur}s;
-    color:rgba(${Math.random()>.5?'255,120,160':'255,215,0'},.65);
-  `;
+  h.style.cssText=`left:${Math.random()*88+6}%;bottom:0;font-size:${Math.random()*.8+.65}rem;animation-duration:${dur}s;color:rgba(${Math.random()>.5?'255,120,160':'255,215,0'},.6);`;
   heartsBox.appendChild(h);
   setTimeout(()=>h.remove(), dur*1000);
 }
-setInterval(spawnHeart, 700);
+setInterval(spawnHeart, 720);
 
-/* ──────────────────────────────────────────
-   CONFETTI (slide 4)
-────────────────────────────────────────── */
+/* ── CONFETTI (slide 4) ── */
 const confBox  = document.getElementById('confBox');
 const confCols = ['#FFD700','#FF6BAE','#00D4FF','#A8FF78','#FF9A56','#C084FC'];
 function spawnConf(){
@@ -973,45 +906,32 @@ function spawnConf(){
   c.className='conf';
   const dur = Math.random()*3+4;
   const col = confCols[Math.floor(Math.random()*confCols.length)];
-  const shapes = ['50%','0%','50% 0%'];
-  c.style.cssText=`
-    left:${Math.random()*100}%;
-    background:${col};
-    width:${Math.random()*6+4}px;
-    height:${Math.random()*6+4}px;
-    border-radius:${shapes[Math.floor(Math.random()*shapes.length)]};
-    animation-duration:${dur}s;
-    animation-delay:${Math.random()*2}s;
-    opacity:.85;
-  `;
+  c.style.cssText=`left:${Math.random()*100}%;background:${col};width:${Math.random()*6+4}px;height:${Math.random()*6+4}px;border-radius:${['50%','0%','50% 0%'][Math.floor(Math.random()*3)]};animation-duration:${dur}s;animation-delay:${Math.random()*2}s;opacity:.8;`;
   confBox.appendChild(c);
-  setTimeout(()=>c.remove(), (dur+2)*1000);
+  setTimeout(()=>c.remove(),(dur+2)*1000);
 }
 setInterval(spawnConf, 280);
 
-/* ──────────────────────────────────────────
-   SHARE FUNCTIONS
-────────────────────────────────────────── */
+/* ── SHARE ── */
 function shareWA(){
   const text = encodeURIComponent(
-    '🎊 You are invited!\n\n' +
-    '💍 Nikitha R weds Hari Viswaa G G\n\n' +
-    '📅 17th & 18th May 2026\n' +
-    '📍 LKS Mahal Aristo, Trichy\n' +
-    '    No. 2, Trichy-Dindigul Road, TN 620001\n\n' +
-    '#NikiViswaaWedding2026\n\n' +
-    '👉 View invitation: ' + window.location.href
+    '🎊 You are invited!\n\n'+
+    '💍 Nikitha R weds Hari Viswaa G G\n\n'+
+    '📅 17th May — Engagement | 18th May — Wedding\n'+
+    '📍 LKS Mahal Aristo, Trichy\n'+
+    '    No. 2, Trichy-Dindigul Road, TN 620001\n\n'+
+    '#NikiViswaaWedding2026\n\n'+
+    '👉 View invitation: '+window.location.href
   );
   window.open('https://wa.me/?text='+text,'_blank');
 }
-
 function copyLink(){
   const url = window.location.href;
   if(navigator.clipboard){
     navigator.clipboard.writeText(url).then(()=> alert('✅ Link copied! Share it with friends & family 🎉'));
   } else {
-    const tmp = document.createElement('input');
-    tmp.value = url; document.body.appendChild(tmp);
+    const tmp=document.createElement('input');
+    tmp.value=url; document.body.appendChild(tmp);
     tmp.select(); document.execCommand('copy');
     document.body.removeChild(tmp);
     alert('✅ Link copied!');
